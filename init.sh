@@ -28,7 +28,7 @@ if [ -n "${1:-}" ]; then
 else
   # 기본값: 플러그인의 상위 디렉토리 (보통 플러그인을 프로젝트 안이나 옆에 두므로)
   DEFAULT_PATH="$(cd "$SCRIPT_DIR/.." && pwd)"
-  read -rp "$(echo -e "${BLUE}[1/5]${NC} 프로젝트 경로 (기본값: ${GREEN}$DEFAULT_PATH${NC}): ")" INPUT_PATH
+  read -rp "$(echo -e "${BLUE}[1/4]${NC} 프로젝트 경로 (기본값: ${GREEN}$DEFAULT_PATH${NC}): ")" INPUT_PATH
   INPUT_PATH="${INPUT_PATH:-$DEFAULT_PATH}"
 fi
 
@@ -36,7 +36,7 @@ fi
 INPUT_PATH="${INPUT_PATH/#\~/$HOME}"
 PROJECT_PATH="$(cd "$INPUT_PATH" && pwd)"
 
-echo -e "${BLUE}[1/5]${NC} 프로젝트 경로: ${GREEN}$PROJECT_PATH${NC}"
+echo -e "${BLUE}[1/4]${NC} 프로젝트 경로: ${GREEN}$PROJECT_PATH${NC}"
 
 if [ ! -d "$PROJECT_PATH" ]; then
   echo -e "${RED}오류: 디렉토리가 존재하지 않습니다: $PROJECT_PATH${NC}"
@@ -54,39 +54,28 @@ fi
 # 2. 프로젝트명
 # ──────────────────────────────────────────
 DEFAULT_NAME="$(basename "$PROJECT_PATH")"
-read -rp "$(echo -e "${BLUE}[2/5]${NC} 프로젝트명 (기본값: ${GREEN}$DEFAULT_NAME${NC}): ")" PROJECT_NAME
+read -rp "$(echo -e "${BLUE}[2/4]${NC} 프로젝트명 (기본값: ${GREEN}$DEFAULT_NAME${NC}): ")" PROJECT_NAME
 PROJECT_NAME="${PROJECT_NAME:-$DEFAULT_NAME}"
 
 # ──────────────────────────────────────────
 # 3. Notion DB 설정
 # ──────────────────────────────────────────
-read -rp "$(echo -e "${BLUE}[3/5]${NC} Notion 작업 DB 사용? (y/N): ")" USE_NOTION
+read -rp "$(echo -e "${BLUE}[3/4]${NC} Notion 작업 DB 사용? (y/N): ")" USE_NOTION
 USE_NOTION="${USE_NOTION,,}" # lowercase
-
-NOTION_DATA_SOURCE_ID=""
-if [[ "$USE_NOTION" == "y" || "$USE_NOTION" == "yes" ]]; then
-  read -rp "$(echo -e "      Notion data_source_id: ")" NOTION_DATA_SOURCE_ID
-  if [ -z "$NOTION_DATA_SOURCE_ID" ]; then
-    echo -e "${YELLOW}경고: data_source_id가 비어있어 Notion 에이전트를 건너뜁니다.${NC}"
-    USE_NOTION="n"
-  fi
-fi
 
 # ──────────────────────────────────────────
 # 4. Git repo 설정
 # ──────────────────────────────────────────
-read -rp "$(echo -e "${BLUE}[4/5]${NC} GitHub repo (예: org/my-project, 빈값=건너뜀): ")" GIT_REPO
+read -rp "$(echo -e "${BLUE}[4/4]${NC} GitHub repo (예: org/my-project, 빈값=건너뜀): ")" GIT_REPO
 
-# ──────────────────────────────────────────
-# 5. 날짜
 # ──────────────────────────────────────────
 DATE="$(date +%Y-%m-%d)"
 
 echo ""
-echo -e "${BLUE}[5/5]${NC} 설정 확인:"
+echo -e "설정 확인:"
 echo -e "  프로젝트명:  ${GREEN}$PROJECT_NAME${NC}"
 echo -e "  경로:        ${GREEN}$PROJECT_PATH${NC}"
-echo -e "  Notion DB:   ${GREEN}${USE_NOTION}${NC} ${NOTION_DATA_SOURCE_ID:+(${NOTION_DATA_SOURCE_ID})}"
+echo -e "  Notion DB:   ${GREEN}${USE_NOTION}${NC}"
 echo -e "  Git repo:    ${GREEN}${GIT_REPO:-없음}${NC}"
 echo -e "  날짜:        ${GREEN}$DATE${NC}"
 echo ""
@@ -104,7 +93,6 @@ substitute() {
   local content="$1"
   content="${content//\{\{PROJECT_PATH\}\}/$PROJECT_PATH}"
   content="${content//\{\{PROJECT_NAME\}\}/$PROJECT_NAME}"
-  content="${content//\{\{NOTION_DATA_SOURCE_ID\}\}/$NOTION_DATA_SOURCE_ID}"
   content="${content//\{\{GIT_REPO\}\}/$GIT_REPO}"
   content="${content//\{\{DATE\}\}/$DATE}"
   content="${content//\{\{HOME\}\}/$HOME}"

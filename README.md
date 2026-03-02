@@ -38,21 +38,22 @@ bash /path/to/claude-project-init/init.sh
 ### 대화형 입력
 
 ```
-[1/5] 프로젝트 경로를 입력하세요: ~/projects/my-project
-[1/5] 프로젝트 경로: /home/user/projects/my-project
-[2/5] 프로젝트명 (기본값: my-project):
-[3/5] Notion 작업 DB 사용? (y/N): y
-      Notion data_source_id: abc123-def456-...
-[4/5] GitHub repo (예: org/my-project): org/my-project
-[5/5] 설정 확인:
+[1/4] 프로젝트 경로 (기본값: /home/user/projects/my-project):
+[1/4] 프로젝트 경로: /home/user/projects/my-project
+[2/4] 프로젝트명 (기본값: my-project):
+[3/4] Notion 작업 DB 사용? (y/N): y
+[4/4] GitHub repo (예: org/my-project): org/my-project
+설정 확인:
   프로젝트명:  my-project
   경로:        /home/user/projects/my-project
-  Notion DB:   y (abc123-def456-...)
+  Notion DB:   y
   Git repo:    org/my-project
   날짜:        2026-03-02
 
 진행할까요? (Y/n):
 ```
+
+> Notion DB 연결(data_source_id)은 init.sh에서 하지 않습니다. Claude Code 세션에서 Notion MCP로 자동 검색/연결합니다.
 
 ## 생성되는 파일
 
@@ -143,9 +144,9 @@ Notion 작업 DB에 기록하고 조회하는 경량 에이전트입니다. Haik
 |-------------|--------|
 | `{{PROJECT_PATH}}` | 프로젝트 절대경로 |
 | `{{PROJECT_NAME}}` | 프로젝트명 |
-| `{{NOTION_DATA_SOURCE_ID}}` | Notion DB data_source_id |
 | `{{GIT_REPO}}` | GitHub 저장소 (org/repo) |
 | `{{DATE}}` | 초기화 실행 날짜 |
+| `{{HOME}}` | 사용자 홈 디렉토리 |
 
 ### 템플릿 수정
 

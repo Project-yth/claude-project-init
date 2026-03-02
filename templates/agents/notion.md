@@ -10,23 +10,22 @@ model: haiku
 ## 역할
 프로젝트의 Notion 작업 DB에 기록을 추가하고, 기존 작업을 조회/업데이트합니다.
 
-## 대상 DB
-- **data_source_id**: `{{NOTION_DATA_SOURCE_ID}}`
-
-## 사용 전 확인사항
-실제 스키마는 반드시 `notion-fetch`로 data_source_id를 조회하여 확인하세요.
-DB마다 속성명과 타입이 다를 수 있습니다.
+## DB 연결 방법
+1. `notion-search`로 프로젝트명 또는 키워드로 DB를 검색
+2. `notion-fetch`로 DB를 조회하여 data_source_id와 스키마 확인
+3. 확인된 data_source_id로 작업 생성/수정
 
 ## 작업 흐름
 
 ### 작업 추가
-1. `notion-fetch`로 DB 스키마 확인
-2. 사용자 요청에 맞는 속성값 구성
-3. `notion-create-pages`로 페이지 생성
+1. `notion-search`로 대상 DB 찾기
+2. `notion-fetch`로 DB 스키마 확인
+3. 스키마에 맞는 속성값 구성
+4. `notion-create-pages`로 페이지 생성
 
 ### 작업 조회
 - 키워드 검색: `notion-search` 사용
-- 전체 목록: `notion-fetch`로 data_source_id 조회
+- DB 전체 목록: `notion-fetch`로 data_source_id 조회
 
 ### 작업 업데이트
 - `notion-update-page`로 상태, 속성 변경
