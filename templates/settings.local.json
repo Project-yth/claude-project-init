@@ -1,0 +1,49 @@
+{
+  "env": {
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git -C {{PROJECT_PATH}} *)",
+      "Bash(uv --directory {{PROJECT_PATH}} *)",
+      "Bash(docker build * -f {{PROJECT_PATH}}/Dockerfile *)",
+      "Bash(gh *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{PROJECT_PATH}}/.claude/hooks/guard-dangerous-cmd.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{PROJECT_PATH}}/.claude/hooks/protect-sensitive-files.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '## 프로젝트: {{PROJECT_NAME}}' && echo '경로: {{PROJECT_PATH}}' && echo '' && echo '## Git 상태' && git -C {{PROJECT_PATH}} branch --show-current 2>/dev/null && git -C {{PROJECT_PATH}} status --short 2>/dev/null | head -10"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "notion"
+  ],
+  "enableAllProjectMcpServers": true
+}
