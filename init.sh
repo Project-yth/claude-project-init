@@ -203,3 +203,18 @@ echo -e "${YELLOW}다음 단계:${NC}"
 echo -e "  1. CLAUDE.md를 열어 프로젝트 개요와 기술 스택을 채우세요"
 echo -e "  2. Claude Code를 실행하고 /session-start로 시작하세요"
 echo -e "  3. 필요에 따라 .claude/agents/에 커스텀 에이전트를 추가하세요"
+
+# ──────────────────────────────────────────
+# 플러그인 폴더 정리
+# ──────────────────────────────────────────
+# 프로젝트 하위에 플러그인이 클론되어 있으면 정리 제안
+PLUGIN_IN_PROJECT="$PROJECT_PATH/$(basename "$SCRIPT_DIR")"
+if [ -d "$PLUGIN_IN_PROJECT" ] && [ "$(cd "$PLUGIN_IN_PROJECT" && pwd)" = "$SCRIPT_DIR" ]; then
+  echo ""
+  read -rp "$(echo -e "${YELLOW}프로젝트 안에 init 폴더가 있습니다. 삭제할까요? (Y/n):${NC} ")" CLEANUP
+  CLEANUP="${CLEANUP,,}"
+  if [[ "$CLEANUP" != "n" && "$CLEANUP" != "no" ]]; then
+    rm -rf "$SCRIPT_DIR"
+    echo -e "${GREEN}✓ ${SCRIPT_DIR##*/} 폴더를 삭제했습니다.${NC}"
+  fi
+fi
