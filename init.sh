@@ -26,13 +26,28 @@ echo ""
 if [ -n "${1:-}" ]; then
   PROJECT_PATH="$(cd "$1" && pwd)"
 else
-  PROJECT_PATH="$(pwd)"
+  # 인자 없으면 직접 입력받기 (pwd 자동 감지 안함 — 플러그인 디렉토리에서 실행할 수 있으므로)
+  read -rp "$(echo -e "${BLUE}[1/5]${NC} 프로젝트 경로를 입력하세요: ")" INPUT_PATH
+  if [ -z "$INPUT_PATH" ]; then
+    echo -e "${RED}오류: 프로젝트 경로를 입력해야 합니다.${NC}"
+    exit 1
+  fi
+  # ~ 확장 처리
+  INPUT_PATH="${INPUT_PATH/#\~/$HOME}"
+  PROJECT_PATH="$(cd "$INPUT_PATH" && pwd)"
 fi
 
 echo -e "${BLUE}[1/5]${NC} 프로젝트 경로: ${GREEN}$PROJECT_PATH${NC}"
 
 if [ ! -d "$PROJECT_PATH" ]; then
   echo -e "${RED}오류: 디렉토리가 존재하지 않습니다: $PROJECT_PATH${NC}"
+  exit 1
+fi
+
+# 플러그인 자체 디렉토리에 설치하려는 건 아닌지 확인
+if [ "$PROJECT_PATH" = "$SCRIPT_DIR" ]; then
+  echo -e "${RED}오류: 플러그인 자체 디렉토리에는 초기화할 수 없습니다.${NC}"
+  echo -e "${YELLOW}대상 프로젝트 경로를 인자로 지정하세요: bash init.sh /path/to/project${NC}"
   exit 1
 fi
 
@@ -61,7 +76,7 @@ fi
 # ──────────────────────────────────────────
 # 4. Git repo 설정
 # ──────────────────────────────────────────
-read -rp "$(echo -e "${BLUE}[4/5]${NC} GitHub repo (예: Project-yth/my-project, 빈값=건너뜀): ")" GIT_REPO
+read -rp "$(echo -e "${BLUE}[4/5]${NC} GitHub repo (예: org/my-project, 빈값=건너뜀): ")" GIT_REPO
 
 # ──────────────────────────────────────────
 # 5. 날짜
