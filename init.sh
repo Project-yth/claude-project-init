@@ -24,18 +24,17 @@ echo ""
 # 1. 프로젝트 경로
 # ──────────────────────────────────────────
 if [ -n "${1:-}" ]; then
-  PROJECT_PATH="$(cd "$1" && pwd)"
+  INPUT_PATH="$1"
 else
-  # 인자 없으면 직접 입력받기 (pwd 자동 감지 안함 — 플러그인 디렉토리에서 실행할 수 있으므로)
-  read -rp "$(echo -e "${BLUE}[1/5]${NC} 프로젝트 경로를 입력하세요: ")" INPUT_PATH
-  if [ -z "$INPUT_PATH" ]; then
-    echo -e "${RED}오류: 프로젝트 경로를 입력해야 합니다.${NC}"
-    exit 1
-  fi
-  # ~ 확장 처리
-  INPUT_PATH="${INPUT_PATH/#\~/$HOME}"
-  PROJECT_PATH="$(cd "$INPUT_PATH" && pwd)"
+  # 기본값: 플러그인의 상위 디렉토리 (보통 플러그인을 프로젝트 안이나 옆에 두므로)
+  DEFAULT_PATH="$(cd "$SCRIPT_DIR/.." && pwd)"
+  read -rp "$(echo -e "${BLUE}[1/5]${NC} 프로젝트 경로 (기본값: ${GREEN}$DEFAULT_PATH${NC}): ")" INPUT_PATH
+  INPUT_PATH="${INPUT_PATH:-$DEFAULT_PATH}"
 fi
+
+# ~ 확장 처리
+INPUT_PATH="${INPUT_PATH/#\~/$HOME}"
+PROJECT_PATH="$(cd "$INPUT_PATH" && pwd)"
 
 echo -e "${BLUE}[1/5]${NC} 프로젝트 경로: ${GREEN}$PROJECT_PATH${NC}"
 
