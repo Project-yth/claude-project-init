@@ -93,6 +93,7 @@ substitute() {
   content="${content//\{\{NOTION_DATA_SOURCE_ID\}\}/$NOTION_DATA_SOURCE_ID}"
   content="${content//\{\{GIT_REPO\}\}/$GIT_REPO}"
   content="${content//\{\{DATE\}\}/$DATE}"
+  content="${content//\{\{HOME\}\}/$HOME}"
   echo "$content"
 }
 

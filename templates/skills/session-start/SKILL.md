@@ -11,7 +11,7 @@ user_invocable: true
 ## 1. 텔레그램 봇 세션 등록
 
 ```bash
-/home/yth1133/workdir/telegram-bot/register-session.sh
+{{HOME}}/workdir/telegram-bot/register-session.sh
 ```
 
 등록 실패해도 세션은 계속 진행합니다. (텔레그램 봇이 없는 환경일 수 있음)

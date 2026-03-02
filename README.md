@@ -27,24 +27,24 @@ git clone https://github.com/Project-yth/claude-project-init.git ~/workdir/claud
 
 ```bash
 # 현재 디렉토리에 세팅
-cd /home/yth1133/workdir/my-project
+cd ~/workdir/my-project
 bash ~/workdir/claude-project-init/init.sh
 
 # 또는 경로를 인자로 지정
-bash ~/workdir/claude-project-init/init.sh /home/yth1133/workdir/my-project
+bash ~/workdir/claude-project-init/init.sh ~/workdir/my-project
 ```
 
 ### 대화형 입력
 
 ```
-[1/5] 프로젝트 경로: /home/yth1133/workdir/my-project
+[1/5] 프로젝트 경로: /home/user/workdir/my-project
 [2/5] 프로젝트명 (기본값: my-project):
 [3/5] Notion 작업 DB 사용? (y/N): y
       Notion data_source_id: abc123-def456-...
 [4/5] GitHub repo (예: Project-yth/my-project): Project-yth/my-project
 [5/5] 설정 확인:
   프로젝트명:  my-project
-  경로:        /home/yth1133/workdir/my-project
+  경로:        /home/user/workdir/my-project
   Notion DB:   y (abc123-def456-...)
   Git repo:    Project-yth/my-project
   날짜:        2026-03-02
